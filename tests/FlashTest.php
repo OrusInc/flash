@@ -12,8 +12,10 @@ class FlashTest extends TestCase
 
   protected $flash;
 
-  public function setUp()
+  public function setUp(): void
   {
+    parent::setUp();
+
     $this->store = Mockery::spy("Orus\Flash\LaravelStore");
 
     $this->flash = new Flash($this->store);
@@ -23,7 +25,7 @@ class FlashTest extends TestCase
   public function it_returns_a_collection_of_alerts()
   {
     $this->assertInstanceOf(
-      Illuminate\Support\Collection::class, 
+      Illuminate\Support\Collection::class,
       $this->flash->alerts()
     );
   }
@@ -32,7 +34,7 @@ class FlashTest extends TestCase
   public function it_displays_a_default_alert()
   {
     $this->flash->default("New version comming...");
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -49,7 +51,7 @@ class FlashTest extends TestCase
   public function it_displays_an_info_alert()
   {
     $this->flash->info("Flash package ready");
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -66,7 +68,7 @@ class FlashTest extends TestCase
   public function it_displays_a_warning_alert()
   {
     $this->flash->warning("Wow, pay attention");
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -83,7 +85,7 @@ class FlashTest extends TestCase
   public function it_displays_a_danger_alert()
   {
     $this->flash->danger("Oups!!!");
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -100,7 +102,7 @@ class FlashTest extends TestCase
   public function it_displays_a_success_alert()
   {
     $this->flash->success("Great!!!");
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -117,7 +119,7 @@ class FlashTest extends TestCase
   public function it_display_an_alert_with_title()
   {
     $this->flash->alert("One more step")->title("Onboarding");
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals("Onboarding", $alert->title);
@@ -134,7 +136,7 @@ class FlashTest extends TestCase
   public function it_display_an_important_alert()
   {
     $this->flash->alert("The token is missing")->important();
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -154,7 +156,7 @@ class FlashTest extends TestCase
       'avatar' => 'custom_url',
       'icon'  => 'fa_user'
       ]);
-    
+
     $alert = $this->flash->alerts()->first();
 
     $this->assertEquals(null, $alert->title);
@@ -199,5 +201,5 @@ class FlashTest extends TestCase
       ->with(Flash::SESSION_KEY, $this->flash->alerts())
       ->once();
   }
-  
+
 }
